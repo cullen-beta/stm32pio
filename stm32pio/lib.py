@@ -392,7 +392,8 @@ class Stm32pio:
             # CubeMX 0 return code doesn't necessarily means the correct generation (e.g. migration dialog has appeared
             # and 'Cancel' was chosen, or CubeMX_version < ioc_file_version), should analyze the output
             error_lines = [line for line in result_output.splitlines() if '[ERROR]' in line]
-            if len(error_lines):
+            success_lines = [line for line in result_output.splitlines() if 'Code succesfully generated' in line]
+            if len(error_lines) and not len(success_lines):
                 self.logger.error('\n'.join(error_lines))
                 raise Exception(error_msg)
             self.logger.info("successful code generation")
